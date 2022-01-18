@@ -233,7 +233,7 @@ public class DeepLearningClassification {
             FinalModel3.Outputs outputs = dlClassifier.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
             float[] data = outputFeature0.getFloatArray();
-//            System.out.println("output: " + Arrays.toString(data));
+            System.out.println("output: " + Arrays.toString(data));
             int i = 0;
             int maxAt = 0;
             for (int j = 0; j < data.length; j++) {
