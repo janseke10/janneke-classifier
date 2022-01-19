@@ -35,9 +35,7 @@ public class PoseEmbedding {
   private static final float TORSO_MULTIPLIER = 2.5f;
 
   public static List<PointF3D> getPoseEmbedding(List<PointF3D> landmarks) {
-    List<PointF3D> normalizedLandmarks = normalize(landmarks);
-    return normalizedLandmarks;
-//    return getEmbedding(normalizedLandmarks);
+    return normalize(landmarks);
   }
 
   private static List<PointF3D> normalize(List<PointF3D> landmarks) {
@@ -45,13 +43,10 @@ public class PoseEmbedding {
     // Normalize translation.
     PointF3D center = average(
         landmarks.get(PoseLandmark.LEFT_HIP), landmarks.get(PoseLandmark.RIGHT_HIP));
-//    System.out.println("center: " + center);
     subtractAll(center, normalizedLandmarks);
 
     // Normalize scale.
     multiplyAll(normalizedLandmarks, 1 / getPoseSize(normalizedLandmarks));
-    // Multiplication by 100 is not required, but makes it easier to debug.
-//    multiplyAll(normalizedLandmarks, 100);
     return normalizedLandmarks;
   }
 
@@ -61,17 +56,12 @@ public class PoseEmbedding {
     // in our experimentation but you're welcome to tweak.
     PointF3D hipsCenter = average(
         landmarks.get(PoseLandmark.LEFT_HIP), landmarks.get(PoseLandmark.RIGHT_HIP));
-//    System.out.println("hipscenter: " + hipsCenter);
 
     PointF3D shouldersCenter = average(
         landmarks.get(PoseLandmark.LEFT_SHOULDER),
         landmarks.get(PoseLandmark.RIGHT_SHOULDER));
 
-//    System.out.println("shouldersCenter: " + shouldersCenter);
-
     float torsoSize = l2Norm2D(subtract(hipsCenter, shouldersCenter));
-
-//    System.out.println("torsoSize: " + torsoSize);
     float maxDistance = torsoSize * TORSO_MULTIPLIER;
     // torsoSize * TORSO_MULTIPLIER is the floor we want based on experimentation but actual size
     // can be bigger for a given pose depending on extension of limbs etc so we calculate that.
@@ -81,7 +71,7 @@ public class PoseEmbedding {
         maxDistance = distance;
       }
     }
-//    System.out.println("pose_size: " + maxDistance);
+
     return maxDistance;
   }
 

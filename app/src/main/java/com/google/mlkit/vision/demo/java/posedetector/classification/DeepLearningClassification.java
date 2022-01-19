@@ -131,34 +131,24 @@ public class DeepLearningClassification {
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 99}, DataType.FLOAT32);
             List<PointF3D> landmarks = extractPoseLandmarks(pose);
-//            System.out.println(landmarks);
             if (landmarks.isEmpty()) {
                 return getStringFromResult(history.getResult());
             }
             List<PointF3D> embedding = getPoseEmbedding(landmarks);
             ByteBuffer buf = ByteBuffer.allocateDirect(99 * 4);
-            boolean justOnce = true;
 
             for (PointF3D landmark : embedding) {
-                if (justOnce) {
-//                    System.out.println("landmark X: " + landmark.getX() + " landmark Y: " + landmark.getY() + " landmark Z: " + landmark.getZ());
-                }
                 buf.putFloat(landmark.getX());
                 buf.putFloat(landmark.getY());
                 buf.putFloat(landmark.getZ());
             }
             buf.rewind();
-//            for (int i = 1; i <= 99; i++)
-//                System.out.println("buf: " + buf.getFloat());
-//
-//            buf.rewind();
             inputFeature0.loadBuffer(buf);
 
             // Runs model inference and gets result.
             FinalModel3.Outputs outputs = dlClassifier.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
             float[] data = outputFeature0.getFloatArray();
-//            System.out.println("output: " + Arrays.toString(data));
             int i = 0;
             for (float val : data) {
                 switch (i) {
@@ -411,16 +401,10 @@ public class DeepLearningClassification {
 
     private static List<PointF3D> extractPoseLandmarks(Pose pose) {
         List<PointF3D> landmarks = new ArrayList<>();
-//        List<Float> floatLandmarks = new ArrayList<>();
+
         for (PoseLandmark poseLandmark : pose.getAllPoseLandmarks()) {
             landmarks.add(poseLandmark.getPosition3D());
-//            floatLandmarks.add(poseLandmark.getPosition3D().getX());
-//            floatLandmarks.add(poseLandmark.getPosition3D().getY());
-//            floatLandmarks.add(poseLandmark.getPosition3D().getZ());
         }
-//        System.out.println("sizesss");
-//        System.out.println(floatLandmarks.size());
-//        System.out.println(landmarks.size());
         return landmarks;
     }
 }

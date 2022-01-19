@@ -168,7 +168,6 @@ public class PoseDetectorProcessor
 
   @Override
   protected Task<PoseWithClassification> detectInImage(MlImage image, long frameStartMs) {
-    System.out.println("detect in imageeee :) ");
     return detector
         .process(image)
         .continueWith(
@@ -176,18 +175,9 @@ public class PoseDetectorProcessor
             task -> {
               Pose pose = task.getResult();
               List<String> classificationResult = new ArrayList<>();
-              System.out.println("previousTime: " + previousTime);
-              System.out.println("frameStartMs: " + frameStartMs);
-              System.out.println("difference: " + (frameStartMs - previousTime));
               if(deepLearning){
-                System.out.println("classification");
                 Trace.beginSection("deeplearning classifier");
-                previousTime = frameStartMs;
                 DeepLearningClassification deepLearning = new DeepLearningClassification();
-//                if(justOnce){
-//                  deepLearning.justOnce(context);
-//                  justOnce = false;
-//                }
                 List<String> results = deepLearning.classify(pose,context);
                 Trace.endSection();
                 return new PoseWithClassification(pose, results);
