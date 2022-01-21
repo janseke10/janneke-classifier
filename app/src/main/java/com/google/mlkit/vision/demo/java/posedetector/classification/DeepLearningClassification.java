@@ -9,6 +9,8 @@ import android.os.Environment;
 
 import com.google.mlkit.vision.common.PointF3D;
 
+import com.google.mlkit.vision.demo.ml.FinalModel1024;
+import com.google.mlkit.vision.demo.ml.FinalModel2048;
 import com.google.mlkit.vision.demo.ml.FinalModel3;
 
 import com.google.mlkit.vision.pose.Pose;

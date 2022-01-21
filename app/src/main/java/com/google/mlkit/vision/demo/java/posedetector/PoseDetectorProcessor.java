@@ -104,7 +104,7 @@ public class PoseDetectorProcessor
     this.isStreamMode = isStreamMode;
     this.context = context;
     classificationExecutor = Executors.newSingleThreadExecutor();
-    testData();
+//    testData();
   }
 
   @RequiresApi(api = Build.VERSION_CODES.N)
